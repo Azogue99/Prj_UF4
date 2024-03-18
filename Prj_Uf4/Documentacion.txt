@@ -1,0 +1,15 @@
+
+    HEARTHSTONE API
+
+https://develop.battle.net/documentation/hearthstone/guides/card-search
+
+https://develop.battle.net/documentation/hearthstone
+
+https://hearthstoneapi.com/
+
+
+
+    MTG API
+
+https://docs.magicthegathering.io/
+
