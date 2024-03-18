@@ -15,6 +15,7 @@
 
 
     Termina el turno del jugador1
+    
     Empieza el turno del jugador2
         Roba una carta del mazo
         
