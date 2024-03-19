@@ -19,6 +19,10 @@ https://develop.battle.net/documentation/hearthstone
 https://hearthstoneapi.com/
 
 
+    
+    Map<String,Object> result = new ObjectMapper().readValue(JSON_SOURCE, HashMap.class);
+
+
 
     MTG API
 
