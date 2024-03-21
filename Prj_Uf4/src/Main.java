@@ -21,23 +21,18 @@ public class Main {
             responseBuilder.append(inputLine);
         }
         br.close();
+        
 
         String jsonResponse = responseBuilder.toString();
 
-        // Parse JSON
         JSONObject jsonObject = new JSONObject(jsonResponse);
         
-        // Now you can work with the jsonObject
-        // For example, getting the cards array
         JSONArray cardsArray = jsonObject.getJSONArray("cards");
 
-        // Iterate through cards if needed
         for (int i = 0; i < cardsArray.length(); i++) {
             JSONObject card = cardsArray.getJSONObject(i);
-            // Extract data from card object as needed
             String cardName = card.getString("name");
             String cardType = card.getString("type");
-            // etc...
             System.out.println("Card Name: " + cardName + ", Type: " + cardType);
         }
     }
