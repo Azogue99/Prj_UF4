@@ -21,7 +21,7 @@ public class Main {
             responseBuilder.append(inputLine);
         }
         br.close();
-        
+
 
         String jsonResponse = responseBuilder.toString();
 
@@ -32,8 +32,7 @@ public class Main {
         for (int i = 0; i < cardsArray.length(); i++) {
             JSONObject card = cardsArray.getJSONObject(i);
             String cardName = card.getString("name");
-            String cardType = card.getString("type");
-            System.out.println("Card Name: " + cardName + ", Type: " + cardType);
+            System.out.println("Card Name: " + cardName);
         }
     }
 }
