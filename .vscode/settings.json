@@ -1,0 +1,11 @@
+{
+    "java.project.sourcePaths": [
+        "Prj_Uf4/src",
+        "Prj_Uf4"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\arnau.azogue\\Desktop\\c2dm.jar",
+        "Prj_Uf4/lib/c2dm.jar"
+    ]
+}

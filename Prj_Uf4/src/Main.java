@@ -1,10 +1,14 @@
-import java.io.*;
-import java.net.*;
-import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
 import com.google.gson.Gson;
-import com.google.common.reflect.TypeToken;
-import java.lang.reclect.Type;
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
 
 public class Main {
 
@@ -19,14 +23,20 @@ public class Main {
         URLConnection urlc = url.openConnection();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
-        String fichero = br.readLine();
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
         br.close();
-        System.out.println(fichero);
+        String json = sb.toString();
+        System.out.println(json);
 
+        Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
+        Map<String, Object> responseMap = new Gson().fromJson(json, mapType);
 
-        Type mapType = new TypeToken<Map<String, Map>>(){}.getType();
-        Map<String, String[]> son = new Gson().fromJson(fichero, mapType);
-
+        // Now you can work with the responseMap to access the data
+        // Example: String cardName = (String) responseMap.get("name");
 
     }
 }
