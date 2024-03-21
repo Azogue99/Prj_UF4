@@ -6,6 +6,6 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\Users\\arnau.azogue\\Desktop\\c2dm.jar",
-        "Prj_Uf4/lib/c2dm.jar"
+        "Prj_Uf4/lib/json-20240205.jar"
     ]
 }

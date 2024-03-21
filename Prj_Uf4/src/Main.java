@@ -1,14 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Map;
-import com.google.gson.Gson;
-import java.lang.reflect.Type;
-import com.google.gson.reflect.TypeToken;
+import java.io.*;
+import java.net.*;
+import org.json.*;
 
 public class Main {
 
@@ -23,20 +15,30 @@ public class Main {
         URLConnection urlc = url.openConnection();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
+        StringBuilder responseBuilder = new StringBuilder();
+        String inputLine;
+        while ((inputLine = br.readLine()) != null) {
+            responseBuilder.append(inputLine);
         }
         br.close();
-        String json = sb.toString();
-        System.out.println(json);
 
-        Type mapType = new TypeToken<Map<String, Object>>(){}.getType();
-        Map<String, Object> responseMap = new Gson().fromJson(json, mapType);
+        String jsonResponse = responseBuilder.toString();
 
-        // Now you can work with the responseMap to access the data
-        // Example: String cardName = (String) responseMap.get("name");
+        // Parse JSON
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        
+        // Now you can work with the jsonObject
+        // For example, getting the cards array
+        JSONArray cardsArray = jsonObject.getJSONArray("cards");
 
+        // Iterate through cards if needed
+        for (int i = 0; i < cardsArray.length(); i++) {
+            JSONObject card = cardsArray.getJSONObject(i);
+            // Extract data from card object as needed
+            String cardName = card.getString("name");
+            String cardType = card.getString("type");
+            // etc...
+            System.out.println("Card Name: " + cardName + ", Type: " + cardType);
+        }
     }
 }
