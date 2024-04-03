@@ -1,7 +1,8 @@
 {
     "java.project.sourcePaths": [
         "Prj_Uf4/src",
-        "Prj_Uf4"
+        "Prj_Uf4",
+        "Prj_UF4-main/Prj_Uf4/src"
     ],
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
