@@ -19,12 +19,22 @@ public class Main {
         saveToCSV(cards);
     }
 
-    private static String getTokenFromJson() throws FileNotFoundException {
+    private static String getTokenFromJson() throws IOException, InterruptedException {
+        String rutaBat = "generarCode.bat";
+        ProcessBuilder jsonTokenGetter = new ProcessBuilder("cmd.exe", "/c", rutaBat); // lo ejecutamos con cmd.
+        Process exe = jsonTokenGetter.start(); 
+
+        // Se comprueba que se haya ejecutado correctamente
+        if (exe.waitFor() == 0) { // el waitFor tiene la capacidad de lanzar una InterruptedExeption
+            System.out.println("OK!");
+        }else{
+            System.out.println("ERROR: no s'ha pogut executar el fitxer .bat correctament");
+        }
+
         File json = new File("token.json");
         Scanner sc = new Scanner(json);
         String token = sc.nextLine();
         sc.close();
-
         JSONObject tokenJsonObject = new JSONObject(token);
         return tokenJsonObject.getString("access_token");
     }
@@ -136,14 +146,15 @@ public class Main {
         String csvFilePath = "cards.csv";
 
         try (FileWriter csvWriter = new FileWriter(csvFilePath)) {
-            // Writing header row
-            csvWriter.append("Name;Class;ManaCost;Attack;Health;Text\n");
+            // header
+            csvWriter.append("Name;Class;ManaCost;Attack;Health;Text;Image;Rarity;Type\n");
 
-            // Writing data rows
+            // data
             for (Card card : cards) {
-                csvWriter.append(String.format("%s;%d;%d;%d;%d;%s\n",
+                csvWriter.append(String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s\n",
                         card.getName(), card.getClassId(), card.getManaCost(),
-                        card.getAttack(), card.getHealth(), card.getText()));
+                        card.getAttack(), card.getHealth(), card.getText(), 
+                        card.getImage(), card.getRarityId(), card.getMinionTypeId()));
             }
 
             System.out.println("Fixer csv creat correctament! [" + csvFilePath + "]");
