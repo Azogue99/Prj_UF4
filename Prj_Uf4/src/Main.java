@@ -137,16 +137,16 @@ public class Main {
 
         try (FileWriter csvWriter = new FileWriter(csvFilePath)) {
             // Writing header row
-            csvWriter.append("Name,Class,ManaCost,Attack,Health,Text\n");
+            csvWriter.append("Name;Class;ManaCost;Attack;Health;Text\n");
 
             // Writing data rows
             for (Card card : cards) {
-                csvWriter.append(String.format("%s,%d,%d,%d,%d,%s\n",
+                csvWriter.append(String.format("%s;%d;%d;%d;%d;%s\n",
                         card.getName(), card.getClassId(), card.getManaCost(),
                         card.getAttack(), card.getHealth(), card.getText()));
             }
 
-            System.out.println("CSV file " + csvFilePath + " created successfully!");
+            System.out.println("Fixer csv creat correctament! [" + csvFilePath + "]");
         }
     }
 }
