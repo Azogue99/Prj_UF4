@@ -10,7 +10,7 @@ import org.json.*;
 public class Main {
 
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
-        
+        System.out.println("0");
         // Llamamos al fichero generarCode.bat para generar el token token.json.
         String rutaBat = "generarCode.bat";
         ProcessBuilder jsonTokenGetter = new ProcessBuilder("cmd.exe", "/c", rutaBat); // lo ejecutamos con cmd.
@@ -22,6 +22,8 @@ public class Main {
         }else{
             System.out.println("no s'ha executat el fitxer .bat correctament");
         }
+
+        System.out.println("1");
     
         // Abrimos el fichero token.json y lo leemos
         File json = new File("token.json");
@@ -35,6 +37,8 @@ public class Main {
         // hay que fixear esta expresion, no podemos iterar sobre caracteres
         String subString = token.substring(17,51);
         System.out.println(subString);
+
+        System.out.println("2");
 
         // esto es correcto
         String CONNECT_API_URL = "https://us.api.blizzard.com/hearthstone/cards?locale=en_US&access_token=" + subString;
@@ -51,6 +55,7 @@ public class Main {
         }
         br.close();
 
+        System.out.println("3");
 
         String jsonResponse = responseBuilder.toString();
 
@@ -68,7 +73,7 @@ public class Main {
 
     public static void readToken(String jsonString) {
         // elimina inicio y final
-        jsonString = jsonString.replace("{", ""); 
+        jsonString = jsonString.replace("{", "");
         jsonString = jsonString.replace("}", "");
 
         // separa por las comas

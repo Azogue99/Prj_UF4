@@ -1,16 +1,47 @@
 import java.io.*;
 import java.net.*;
+import java.util.Arrays;
+import java.util.Scanner;
+
 import org.json.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
+        System.out.println("0");
+        // Llamamos al fichero generarCode.bat para generar el token token.json.
+        String rutaBat = "generarCode.bat";
+        ProcessBuilder jsonTokenGetter = new ProcessBuilder("cmd.exe", "/c", rutaBat); // lo ejecutamos con cmd.
+        Process exe = jsonTokenGetter.start(); 
 
-        String token = "EUnWcbuuw5cxlNGcaO8z1RkSIo2PEo5jdW";
+        // Se comprueba que se haya ejecutado correctamente
+        if (exe.waitFor() == 0) { // el waitFor tiene la capacidad de lanzar una InterruptedExeption
+            System.out.println("ok");
+        }else{
+            System.out.println("no s'ha executat el fitxer .bat correctament");
+        }
 
-        String CONNECT_API_URL = "https://us.api.blizzard.com/hearthstone/cards?locale=en_US&access_token=" + token;
+        System.out.println("1");
+    
+        // Abrimos el fichero token.json y lo leemos
+        File json = new File("token.json");
+        Scanner sc = new Scanner(json);
+        String token = sc.nextLine();
+        sc.close();
 
-        URL url = new URI(CONNECT_API_URL).toURL();
+        readToken(token);
+        System.out.println(token);
+
+        // hay que fixear esta expresion, no podemos iterar sobre caracteres
+        String subString = token.substring(17,51);
+        System.out.println(subString);
+
+        System.out.println("2");
+
+        // esto es correcto
+        String CONNECT_API_URL = "https://us.api.blizzard.com/hearthstone/cards?locale=en_US&access_token=" + subString;
+        System.out.println(CONNECT_API_URL);
+        URL url = new URI(CONNECT_API_URL).toURL(); // tiene la capacidad de lanzar una URISyntaxException
 
         URLConnection urlc = url.openConnection();
 
@@ -22,6 +53,7 @@ public class Main {
         }
         br.close();
 
+        System.out.println("3");
 
         String jsonResponse = responseBuilder.toString();
 
@@ -35,4 +67,20 @@ public class Main {
             System.out.println("Card Name: " + cardName);
         }
     }
+
+
+    public static void readToken(String jsonString) {
+        // elimina inicio y final
+        jsonString = jsonString.replace("{", "");
+        jsonString = jsonString.replace("}", "");
+
+        // separa por las comas
+        String[] JsonArray = jsonString.split(",");
+
+        
+        // print
+        String stringArray = Arrays.toString(JsonArray);
+        System.out.println(stringArray);
+    }
+    
 }
