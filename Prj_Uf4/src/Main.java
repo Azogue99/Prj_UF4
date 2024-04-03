@@ -6,16 +6,16 @@ import org.json.*;
 public class Main {
 
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
-        // Fetching token
+        // Obten el token
         String sToken = getTokenFromJson();
 
-        // Fetching card data from API
+        // Obten todas las cartas (de las diferentes paginas)
         JSONArray cardsArray = fetchAllCardsFromApi(sToken);
         
-        // Parsing card data
+        // Pasa de JsonArray a ArrayList todas las cartas
         ArrayList<Card> cards = parseCards(cardsArray);
 
-        // Save the data into CSV file
+        // Guarda las cartas en un fichero csv
         saveToCSV(cards);
     }
 
@@ -40,8 +40,8 @@ public class Main {
             for (int i = 0; i < cardsArray.length(); i++) {
                 allCardsArray.put(cardsArray.getJSONObject(i));
             }
-            pageCount = jsonObject.getInt("pageCount");
-            currentPage++;
+            pageCount = jsonObject.getInt("pageCount"); // dime cuantas paginas hay
+            currentPage++; // pasa de pagina
         } while (currentPage <= pageCount);
         return allCardsArray;
     }
@@ -65,51 +65,55 @@ public class Main {
         for (int i = 0; i < cardsArray.length(); i++) {
             JSONObject cardObj = cardsArray.getJSONObject(i);
             Card card = new Card();
-            card.setId(cardObj.getInt("id"));
-            card.setCollectible(cardObj.getInt("collectible"));
-            card.setSlug(cardObj.getString("slug"));
-            card.setClassId(cardObj.getInt("classId"));
-            card.setMultiClassIds(toArrayList(cardObj.getJSONArray("multiClassIds")));
-            // Check if "spellSchoolId" exists before trying to retrieve its value
-            if (cardObj.has("spellSchoolId")) {
-                card.setSpellSchoolId(cardObj.getInt("spellSchoolId"));
-            }
-            card.setCardTypeId(cardObj.getInt("cardTypeId"));
-            card.setCardSetId(cardObj.getInt("cardSetId"));
-            card.setRarityId(cardObj.getInt("rarityId"));
-            card.setArtistName(cardObj.getString("artistName"));
-            card.setManaCost(cardObj.getInt("manaCost"));
-            card.setName(cardObj.getString("name"));
-            card.setText(cardObj.getString("text"));
-            card.setImage(cardObj.getString("image"));
-            card.setImageGold(cardObj.getString("imageGold"));
-            card.setFlavorText(cardObj.getString("flavorText"));
-            card.setCropImage(cardObj.getString("cropImage"));
-            card.setKeywordIds(toArrayList(cardObj.getJSONArray("keywordIds")));
-            card.setZilliaxFunctionalModule(cardObj.getBoolean("isZilliaxFunctionalModule"));
-            card.setZilliaxCosmeticModule(cardObj.getBoolean("isZilliaxCosmeticModule"));
-            card.setDuels(parseDuels(cardObj.getJSONObject("duels")));
-            card.setCopyOfCardId(cardObj.getInt("copyOfCardId"));
-            card.setHealth(cardObj.getInt("health"));
-            card.setAttack(cardObj.getInt("attack"));
-            card.setMinionTypeId(cardObj.getInt("minionTypeId"));
-            card.setChildIds(toArrayList(cardObj.getJSONArray("childIds")));
-            card.setRuneCost(parseRuneCost(cardObj.getJSONObject("runeCost")));
+            card.setId(cardObj.optInt("id", -1));
+            card.setCollectible(cardObj.optInt("collectible", -1));
+            card.setSlug(cardObj.optString("slug", ""));
+            card.setClassId(cardObj.optInt("classId", -1));
+            card.setMultiClassIds(toArrayList(cardObj.optJSONArray("multiClassIds")));
+            card.setSpellSchoolId(cardObj.optInt("spellSchoolId", -1));
+            card.setCardTypeId(cardObj.optInt("cardTypeId", -1));
+            card.setCardSetId(cardObj.optInt("cardSetId", -1));
+            card.setRarityId(cardObj.optInt("rarityId", -1));
+            card.setArtistName(cardObj.optString("artistName", ""));
+            card.setManaCost(cardObj.optInt("manaCost", -1));
+            card.setName(cardObj.optString("name", ""));
+            card.setText(cardObj.optString("text", ""));
+            card.setImage(cardObj.optString("image", ""));
+            card.setImageGold(cardObj.optString("imageGold", ""));
+            card.setFlavorText(cardObj.optString("flavorText", ""));
+            card.setCropImage(cardObj.optString("cropImage", ""));
+            card.setKeywordIds(toArrayList(cardObj.optJSONArray("keywordIds")));
+            card.setZilliaxFunctionalModule(cardObj.optBoolean("isZilliaxFunctionalModule", false));
+            card.setZilliaxCosmeticModule(cardObj.optBoolean("isZilliaxCosmeticModule", false));
+            card.setDuels(parseDuels(cardObj.optJSONObject("duels")));
+            card.setCopyOfCardId(cardObj.optInt("copyOfCardId", -1));
+            card.setHealth(cardObj.optInt("health", -1));
+            card.setAttack(cardObj.optInt("attack", -1));
+            card.setMinionTypeId(cardObj.optInt("minionTypeId", -1));
+            card.setChildIds(toArrayList(cardObj.optJSONArray("childIds")));
+            card.setRuneCost(parseRuneCost(cardObj.optJSONObject("runeCost")));
             cards.add(card);
         }
         return cards;
     }
     
+    
 
     private static Duels parseDuels(JSONObject duelsObj) {
         Duels duels = new Duels();
-        duels.setRelevant(duelsObj.getBoolean("relevant"));
-        duels.setConstructed(duelsObj.getBoolean("constructed"));
+        if (duelsObj == null) {
+            return duels;
+        }
+        duels.setRelevant(duelsObj.optBoolean("relevant", false));
+        duels.setConstructed(duelsObj.optBoolean("constructed", false));
         return duels;
     }
 
     private static RuneCost parseRuneCost(JSONObject runeCostObj) {
         RuneCost runeCost = new RuneCost();
+        if (runeCostObj == null) {
+            return runeCost;
+        }
         runeCost.setBlood(runeCostObj.getInt("blood"));
         runeCost.setFrost(runeCostObj.getInt("frost"));
         runeCost.setUnholy(runeCostObj.getInt("unholy"));
@@ -118,11 +122,15 @@ public class Main {
 
     private static ArrayList<Integer> toArrayList(JSONArray jsonArray) {
         ArrayList<Integer> list = new ArrayList<>();
+        if (jsonArray == null) {
+            return list;
+        }
         for (int i = 0; i < jsonArray.length(); i++) {
             list.add(jsonArray.getInt(i));
         }
         return list;
     }
+    
 
     private static void saveToCSV(ArrayList<Card> cards) throws IOException {
         String csvFilePath = "cards.csv";
