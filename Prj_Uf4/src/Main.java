@@ -19,7 +19,7 @@ public class Main {
         saveToCSV(cards);
 
         // Ejecuta la interfaz
-        Interfaz app = new Interfaz(cards);
+        Interfaz app = new Interfaz();
         app.setVisible(true);
     }
 

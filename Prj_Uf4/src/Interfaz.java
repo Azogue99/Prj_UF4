@@ -12,13 +12,7 @@ import javax.swing.JOptionPane;
  * @author alber
  */
 public class Interfaz extends javax.swing.JFrame {
-  static boolean VD;
-  private ArrayList<Card> cards;
-  public Interfaz (ArrayList<Card> cards) {
-        this.cards = cards;
-        initComponents();
-
-    }
+    static boolean VD;
     public Interfaz() {
         initComponents();
          // Método para mostrar las cartas en la tabla
