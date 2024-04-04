@@ -17,7 +17,9 @@ public class Main {
 
         // Guarda las cartas en un fichero csv
         saveToCSV(cards);
-        Interfaz app= new Interfaz(cards);
+
+        // Ejecuta la interfaz
+        Interfaz app = new Interfaz(cards);
         app.setVisible(true);
     }
 
