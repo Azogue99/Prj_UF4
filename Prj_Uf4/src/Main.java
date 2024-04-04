@@ -111,8 +111,6 @@ public class Main {
         return cards;
     }
     
-    
-
     private static Duels parseDuels(JSONObject duelsObj) {
         Duels duels = new Duels();
         if (duelsObj == null) {
