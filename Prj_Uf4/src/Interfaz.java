@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -11,10 +13,16 @@ import javax.swing.JOptionPane;
  */
 public class Interfaz extends javax.swing.JFrame {
   static boolean VD;
+  private ArrayList<Card> cards;
+  public Interfaz (ArrayList<Card> cards) {
+        this.cards = cards;
+        initComponents();
+
+    }
     public Interfaz() {
         initComponents();
+         // Método para mostrar las cartas en la tabla
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

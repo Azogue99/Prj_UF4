@@ -17,6 +17,8 @@ public class Main {
 
         // Guarda las cartas en un fichero csv
         saveToCSV(cards);
+        Interfaz app= new Interfaz(cards);
+        app.setVisible(true);
     }
 
     private static String getTokenFromJson() throws IOException, InterruptedException {
